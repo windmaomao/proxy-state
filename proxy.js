@@ -1,5 +1,9 @@
 const handler = {
-  get: function () {
+  get: function (target, prop, receiver) {
+    const value = Reflect.get(...arguments)
+    if (typeof value === 'function') {
+      return () => { value.call(target, target) }
+    }
     return Reflect.get(...arguments)
   },
   set: function (obj, prop, value) {

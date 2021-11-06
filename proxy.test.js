@@ -11,7 +11,7 @@ test('can write property', () => {
   expect(p.a).toBe(2)
 })
 
-test('can invoke function changing property', () => {
+test('can invoke function with this', () => {
   const p = proxy({
     a: 1, 
     inc: function() {
@@ -22,10 +22,10 @@ test('can invoke function changing property', () => {
   expect(p.a).toBe(2)
 })
 
-test('can invoke action changing property', () => {
+test('can invoke action', () => {
   const p = proxy({
     a: 1,
-    inc: function (m) {
+    inc: m => {
       m.a++
     }
   })
