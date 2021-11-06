@@ -4,7 +4,10 @@
     "test": "jest --watch"
   },
   "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
     "jest": "^27.3.1",
-    "rollup": "^2.59.0"
+    "rollup": "^2.59.0",
+    "rollup-plugin-babel": "^4.4.0"
   }
 }
