@@ -5,7 +5,7 @@ A plain proxy implementation to support a state object where you can define prop
 ```javascript
   const p = proxy({
     count: 1,
-    inc: state => {
+    inc: (state) => {
       state.count++
     }
   })  

@@ -4,7 +4,7 @@ const handler = {
     if (typeof value === 'function') {
       return () => { value.call(target, target) }
     }
-    return Reflect.get(...arguments)
+    return value
   },
   set: function (obj, prop, value) {
     obj[prop] = value
