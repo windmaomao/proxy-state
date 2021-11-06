@@ -36,19 +36,25 @@ Using _React_ as an example, if a change is detected, `dispatch` is invoked alon
 
 ```javascript
 const useProxy = (initialObj) => {
-  const [, dispatch] = useState(initialObj)
+  const [, dispatch] = useState(0)
 
-  const [obj] = useState(proxy(initialObj, {
-    canSet: (obj, prop, value) => {
-      if (obj[prop] !== value) {
-        dispatch({ ...obj, [prop]: value })
-        return true
-      }
-      return false
-    }
+  const [p] = useState(proxy(initialObj, {
+    canSet: (obj, prop, value) => obj[prop] !== value,
+    afterSet: () => { dispatch(v => v + 1) }
   }))
 
-  return obj
+  return p
+}
+
+const counter = {
+  count: 1,
+  inc: (state) => { state.count++ },  
+}
+
+function App() {
+  const m = useProxy(counter)  
+  
+  return <div>{m.count}</div>
 }
 ```
 

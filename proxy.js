@@ -18,6 +18,7 @@ const handler = ops => ({
     if (canSet) {
       obj[prop] = value
     }
+    ops.afterSet && ops.afterSet(obj)
 
     return true
   }

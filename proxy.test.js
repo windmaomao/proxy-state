@@ -11,6 +11,15 @@ test('can set property', () => {
   expect(p.a).toBe(2)
 })
 
+test('can invoke after set property', () => {
+  const fn = jest.fn()
+  const p = proxy({ a: 1 }, { 
+    afterSet: () => { fn() }
+  })
+  p.a++
+  expect(fn.mock.calls.length).toBe(1)
+})
+
 test('can disable setting property', () => {
   const p = proxy({ a: 1 }, { canSet: () => false })
   p.a++
