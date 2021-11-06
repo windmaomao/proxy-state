@@ -10,7 +10,7 @@
 
         if (typeof value === 'function') {
           return function () {
-            value.call(receiver, receiver);
+            value.apply(receiver, [receiver].concat(Array.prototype.slice.call(arguments)));
           };
         }
 

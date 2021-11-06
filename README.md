@@ -28,6 +28,29 @@ You can actually use the option `canSet` to decide if a property can be set:
   p.inc()   // 2
 ```
 
+## Integration
+
+You can integrate the proxy to a system that supports a dispatch.
+
+Using _React_ as an example, if a change is detected, `dispatch` is invoked along with setting the new value:
+
+```javascript
+const useProxy = (initialObj) => {
+  const [, dispatch] = useState(initialObj)
+
+  const [obj] = useState(proxy(initialObj, {
+    canSet: (obj, prop, value) => {
+      if (obj[prop] !== value) {
+        dispatch({ ...obj, [prop]: value })
+        return true
+      }
+      return false
+    }
+  }))
+
+  return obj
+}
+```
 
 
 ## Develop
