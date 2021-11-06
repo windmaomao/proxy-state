@@ -2,7 +2,11 @@ const handler = ops => ({
   get: function (target, prop, receiver) {
     const value = Reflect.get(...arguments)
     if (typeof value === 'function') {
-      return () => { value.call(receiver, receiver) }
+      return function () { 
+        value.apply(receiver, [
+          receiver, ...arguments
+        ]) 
+      }
     }
     return value
   },

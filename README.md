@@ -1,21 +1,24 @@
 # Proxy State
 
-A plain proxy implementation to support a state object where you can define properties and actions to change these properties.
+A plain proxy implementation to support a state object where you can define properties and actions.
 
 ```javascript
   const p = proxy({
     count: 1,
-    inc: (s) => { s.count++ }
+    inc: (state, payload) => {
+      state.count += 2
+    }
   })  
 
-  p.inc()   // 2
+  p.inc(9)   // 10
 ```
+
 You can actually use the option `canSet` to decide if a property can be set:
 
 ```javascript
   const p = proxy({
     count: 1,
-    inc: (s) => { s.count++ },
+    inc: (state) => { state.count++ },
     canSet: (obj, prop, value) => {
       return value < 3
     }
@@ -24,6 +27,8 @@ You can actually use the option `canSet` to decide if a property can be set:
   p.inc()   // 2
   p.inc()   // 2
 ```
+
+
 
 ## Develop
 

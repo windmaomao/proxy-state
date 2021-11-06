@@ -55,3 +55,12 @@ test('can disable action', () => {
   p.inc()
   expect(p.a).toBe(1)
 })
+
+test('can invoke action with payload', () => {
+  const p = proxy({
+    a: 1,
+    inc: (m, payload) => { m.a += payload }
+  })
+  p.inc(9)
+  expect(p.a).toBe(10)
+})
