@@ -17,6 +17,16 @@ test('can disable setting property', () => {
   expect(p.a).toBe(1)
 })
 
+test('can disable based on conditions', () => {
+  const p = proxy({ a: 1 }, { canSet: (obj, prop, value) => {
+    return value < 3
+  }})
+  p.a++
+  expect(p.a).toBe(2)
+  p.a++
+  expect(p.a).toBe(2)
+})
+
 test('can invoke function with this', () => {
   const p = proxy({
     a: 1, 
@@ -35,7 +45,7 @@ test('can invoke action', () => {
   expect(p.a).toBe(2)
 })
 
-test('can disable all actions', () => {
+test('can disable action', () => {
   const p = proxy({
     a: 1,
     inc: m => { m.a++ }
@@ -45,15 +55,3 @@ test('can disable all actions', () => {
   p.inc()
   expect(p.a).toBe(1)
 })
-
-// test('can disable one action', () => {
-//   const p = proxy({
-//     a: 1,
-//     inc: m => { m.a++ },
-//     dec: m => { m.a-- }
-//   }, {
-//     canSet: (obj, prop) => prop === 'inc'
-//   })
-//   p.inc()
-//   expect(p.a).toBe(2)
-// })

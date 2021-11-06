@@ -3,26 +3,38 @@
   factory();
 })((function () { 'use strict';
 
-  var handler = {
-    get: function get(target, prop, receiver) {
-      var value = Reflect.get.apply(Reflect, arguments);
+  var handler = function handler(ops) {
+    return {
+      get: function get(target, prop, receiver) {
+        var value = Reflect.get.apply(Reflect, arguments);
 
-      if (typeof value === 'function') {
-        return function () {
-          value.call(target, target);
-        };
+        if (typeof value === 'function') {
+          return function () {
+            value.call(receiver, receiver);
+          };
+        }
+
+        return value;
+      },
+      set: function set(obj, prop, value) {
+        var canSet = true;
+
+        if (ops.canSet) {
+          canSet = ops.canSet(obj, prop, value);
+        }
+
+        if (canSet) {
+          obj[prop] = value;
+        }
+
+        return true;
       }
-
-      return value;
-    },
-    set: function set(obj, prop, value) {
-      obj[prop] = value;
-      return true;
-    }
+    };
   };
 
-  function proxy(obj) {
-    return new Proxy(obj, handler);
+  function proxy(obj, options) {
+    options = options || {};
+    return new Proxy(obj, handler(options));
   }
 
   module.exports = proxy;
