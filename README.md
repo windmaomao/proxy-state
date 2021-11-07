@@ -3,49 +3,51 @@
 A plain proxy implementation to support a state object where you can define properties and actions.
 
 ```javascript
-  const p = proxy({
-    count: 1,
-    inc: (state, payload) => {
-      state.count += 2
-    }
-  })  
+const proxy = require('proxy-states')
 
-  p.inc(9)   // 10
+const p = proxy({
+  count: 1,
+  inc: (state, payload) => {
+    state.count += payload
+  }
+})  
+
+p.inc(9)   // 10
 ```
 
 You can actually use the option `canSet` to decide if a property can be set:
 
 ```javascript
-  const p = proxy({
-    count: 1,
-    inc: (state) => { state.count++ },
-    canSet: (obj, prop, value) => {
-      return value < 3
-    }
-  })
+const proxy = require('proxy-states')
 
-  p.inc()   // 2
-  p.inc()   // 2
+const p = proxy({
+  count: 1,
+  inc: (state) => { state.count++ },
+  canSet: (obj, prop, value) => {
+    return value < 3
+  }
+})
+
+p.inc()   // 2
+p.inc()   // 2
 ```
 
 ## Integration
 
 You can integrate the proxy to a system that supports a dispatch.
 
-Using _React_ as an example, if a change is detected, `dispatch` is invoked along with setting the new value:
+Using _React_ as an example, it creates a hook via `createProxyHook`, which takes `useState` from `react`.
 
 ```javascript
-const useProxy = (initialObj) => {
-  const [, dispatch] = useState(0)
+const { createProxyHook } = require('proxy-states')
+const { useState } = require('react')
 
-  const [p] = useState(proxy(initialObj, {
-    canSet: (obj, prop, value) => obj[prop] !== value,
-    afterSet: () => { dispatch(v => v + 1) }
-  }))
+const useProxy = createProxyHook(useState)
+```
 
-  return p
-}
+With the `useProxy` hook, we can apply it to the `App` component with `counter` state.
 
+```javascript
 const counter = {
   count: 1,
   inc: (state) => { state.count++ },  
@@ -57,7 +59,6 @@ function App() {
   return <div>{m.count}</div>
 }
 ```
-
 
 ## Develop
 

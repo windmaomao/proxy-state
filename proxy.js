@@ -3,7 +3,7 @@ const handler = ops => ({
     const value = Reflect.get(...arguments)
     if (typeof value === 'function') {
       return function () { 
-        value.apply(receiver, [
+        return value.apply(receiver, [
           receiver, ...arguments
         ]) 
       }

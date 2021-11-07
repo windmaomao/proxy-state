@@ -73,3 +73,16 @@ test('can invoke action with payload', () => {
   p.inc(9)
   expect(p.a).toBe(10)
 })
+
+test('can invoke async action', () => {
+  const p = proxy({
+    a: 1,
+    inc: async function (m) { 
+      m.a += 1 
+      return m.a
+    }
+  })
+  p.inc().then(res => {
+    expect(res).toBe(2)
+  })
+})

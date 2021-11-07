@@ -1,4 +1,8 @@
 {
+  "name": "proxy-states",
+  "description": "A plain proxy implementation to support a state object where you can define properties and actions.",
+  "version": "0.0.1",
+  "main": "main.js",
   "scripts": {
     "build": "rollup -c",
     "test": "jest --watch"
@@ -8,6 +12,23 @@
     "@babel/preset-env": "^7.16.0",
     "jest": "^27.3.1",
     "rollup": "^2.59.0",
-    "rollup-plugin-babel": "^4.4.0"
-  }
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-commonjs": "^10.1.0"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/windmaomao/proxy-state.git"
+  },
+  "keywords": [
+    "proxy",
+    "state",
+    "react"
+  ],
+  "author": "Fang Jin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/windmaomao/proxy-state/issues"
+  },
+  "homepage": "https://github.com/windmaomao/proxy-state#readme"
 }
