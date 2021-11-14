@@ -23,11 +23,15 @@
         canSet = ops.canSet(obj, prop, value);
       }
 
+      ops.beforeSet && ops.beforeSet(obj, prop, value, canSet);
+      var prev;
+
       if (canSet) {
+        prev = obj[prop];
         obj[prop] = value;
       }
 
-      ops.afterSet && ops.afterSet(obj);
+      ops.afterSet && ops.afterSet(obj, prop, value, prev);
       return true;
     }
   });
