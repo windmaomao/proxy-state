@@ -1,4 +1,4 @@
-const proxy = require('./proxy')
+import proxy from './proxy'
 
 const createProxyHook = useState => (initialObj) => {
   const [, dispatch] = useState(0)
@@ -10,4 +10,4 @@ const createProxyHook = useState => (initialObj) => {
   return p
 }
 
-module.exports = createProxyHook
+export default createProxyHook

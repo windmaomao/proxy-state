@@ -1,6 +1,14 @@
-const handler = ops => ({
+import listener from './listener'
+
+const handler = (ops, events) => ({
   get: function (target, prop, receiver) {
     const value = Reflect.get(...arguments)
+
+    if (prop === 'on') {
+      return function (event, fn) {
+        events.add(event, fn)
+      }
+    }
     if (typeof value === 'function') {
       return function () { 
         return value.apply(receiver, [
@@ -23,6 +31,7 @@ const handler = ops => ({
       obj[prop] = value
     }
     ops.afterSet && ops.afterSet(obj, prop, value, prev)
+    events.has(prop) && events.invoke(prop, value, prev)
 
     return true
   }
@@ -30,7 +39,8 @@ const handler = ops => ({
 
 function proxy(obj, options) {
   options = options || {}
-  return new Proxy(obj, handler(options))
+  const events = listener()
+  return new Proxy(obj, handler(options, events))
 }
 
-module.exports = proxy
+export default proxy

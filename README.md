@@ -103,6 +103,22 @@ p.inc()
 
 Use the `beforeSet` callback can capture all change request regardless whether the change is accepted.
 
+### on change listening
+
+To listen to a property change, we can use a event listener `on`:
+
+```jsx
+const p = proxy({
+  count: 1,
+})
+
+p.on('count', (v) => {
+  ...
+})
+
+p.count++
+```
+
 ## React
 
 Feel free to use the `proxy-states` as it is. Also you can integrate it to a system that supports a dispatch.

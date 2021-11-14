@@ -1,7 +1,7 @@
 {
   "name": "proxy-states",
   "description": "A plain proxy implementation to support a state object where you can define properties and actions.",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "main": "dist/proxy-states.umd.js",
   "browser": "dist/proxy-states.umd.js",
   "browserExport": "ProxyStates",

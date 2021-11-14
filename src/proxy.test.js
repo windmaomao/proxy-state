@@ -1,4 +1,4 @@
-const proxy = require('./proxy')
+import proxy from './proxy'
 
 test('can get state', () => {
   const p = proxy({ a: 1 })
@@ -147,4 +147,14 @@ test('can invoke async action', () => {
   p.inc().then(res => {
     expect(res).toBe(2)
   })
+})
+
+test('can invoke on event', () => {
+  const fn = jest.fn()
+  const p = proxy({ a: 1 })
+  p.on('a', (v, p) => { fn(v, p) })
+  p.a++
+  expect(fn.mock.calls.length).toBe(1)
+  expect(fn.mock.calls[0][0]).toBe(2)
+  expect(fn.mock.calls[0][1]).toBe(1)
 })

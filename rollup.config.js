@@ -3,12 +3,12 @@ import commonjs from 'rollup-plugin-commonjs'
 import pkg from './package.json'
 
 export default {
-  input: './main.js',
+  input: './src/proxy.js',
   output: {
     file: pkg.browser,
     format: 'umd',
     name: pkg.browserExport,
-    exports: 'named'
+    exports: 'default'
   },
   plugins: [
     commonjs(),
