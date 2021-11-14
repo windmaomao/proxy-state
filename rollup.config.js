@@ -1,12 +1,14 @@
 import babel from 'rollup-plugin-babel'
 import commonjs from 'rollup-plugin-commonjs'
+import pkg from './package.json'
 
 export default {
   input: './main.js',
   output: {
-    file: './dist/proxy-state.umd.js',
+    file: pkg.browser,
     format: 'umd',
-    name: 'proxy-state'
+    name: pkg.browserExport,
+    exports: 'named'
   },
   plugins: [
     commonjs(),

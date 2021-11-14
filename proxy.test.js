@@ -54,6 +54,14 @@ test('can invoke action', () => {
   expect(p.a).toBe(2)
 })
 
+test('can invoke action for a return', () => {
+  const p = proxy({
+    a: 1,
+    read: m => { return m.a }
+  })
+  expect(p.read()).toBe(1)
+})
+
 test('can disable action', () => {
   const p = proxy({
     a: 1,
