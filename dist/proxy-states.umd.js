@@ -10,6 +10,13 @@
     var has = event => !!m[event];
 
     var add = (event, fn) => {
+      if (Array.isArray(event)) {
+        event.forEach(e => {
+          add(e, fn);
+        });
+        return;
+      }
+
       m[event] = m[event] || [];
       if (m[event].indexOf(fn) >= 0) return;
       m[event].push(fn);
@@ -65,7 +72,7 @@
       }
 
       ops.afterSet && ops.afterSet(obj, prop, value, prev);
-      events.has(prop) && events.invoke(prop, value, prev);
+      events.has(prop) && events.invoke(prop, value, prev, prop);
       return true;
     }
   });

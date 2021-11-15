@@ -1,11 +1,15 @@
 const listener = () => {
-  const m = {
-
-  }
+  const m = {}
 
   const has = (event) => !!m[event]
 
   const add = (event, fn) => {
+    if (Array.isArray(event)) {
+      event.forEach(e => {
+        add(e, fn)
+      })
+      return
+    }
     m[event] = m[event] || []
     if (m[event].indexOf(fn) >= 0) return
 

@@ -31,7 +31,7 @@ const handler = (ops, events) => ({
       obj[prop] = value
     }
     ops.afterSet && ops.afterSet(obj, prop, value, prev)
-    events.has(prop) && events.invoke(prop, value, prev)
+    events.has(prop) && events.invoke(prop, value, prev, prop)
 
     return true
   }

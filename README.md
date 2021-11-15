@@ -43,7 +43,7 @@ p.inc(9)    // count: 10
 
 Notice the `inc` action is defined with a function that takes the current `state` as an input argument. 
 
-To listen to a property change, we can use a event listener:
+To listen to a state change, we can subscribe to it with an event listener:
 
 ```jsx
 const p = proxy({
@@ -51,14 +51,22 @@ const p = proxy({
 })
 
 p.on('count', (v, prev) => {
-  // v: 2  prev: 1
+  // v: 2, prev: 1
   console.log(v)
 })
 
 p.count++
 ```
 
-The preceding `on` function listens to any change happened to the `count` state. The callback gives you the current value it changes to and the previous value it changes from.
+The `on` function listens to any change happened to the `count` state. The callback gives you the current value and the previous value it changes from.
+
+You can also listen to a set of states change instead of a single state:
+
+```jsx
+p.on(['count'], (v, prev, prop) => {
+	// v: 2, prev: 1, prop: 'count'
+})
+```
 
 ## Options
 

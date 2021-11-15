@@ -158,3 +158,14 @@ test('can invoke on event', () => {
   expect(fn.mock.calls[0][0]).toBe(2)
   expect(fn.mock.calls[0][1]).toBe(1)
 })
+
+test('can invoke on event array', () => {
+  const fn = jest.fn()
+  const p = proxy({ a: 1 })
+  p.on(['b', 'a'], (v, prev, prop) => { fn(v, prev, prop) })
+  p.a++
+  expect(fn.mock.calls.length).toBe(1)
+  expect(fn.mock.calls[0][0]).toBe(2)
+  expect(fn.mock.calls[0][1]).toBe(1)
+  expect(fn.mock.calls[0][2]).toBe('a')
+})
