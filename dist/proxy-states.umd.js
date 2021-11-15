@@ -1,8 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.ProxyStates = factory());
-})(this, (function () { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+  typeof define === 'function' && define.amd ? define(['exports'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.ProxyStates = {}));
+})(this, (function (exports) { 'use strict';
 
   var listener = () => {
     var m = {};
@@ -76,6 +76,20 @@
     return new Proxy(obj, handler(options, events));
   }
 
-  return proxy;
+  var createProxyHook = useState => initialObj => {
+    var [, dispatch] = useState(0);
+    var [p] = useState(proxy(initialObj, {
+      canSet: (obj, prop, value) => obj[prop] !== value,
+      afterSet: () => {
+        dispatch(v => v + 1);
+      }
+    }));
+    return p;
+  };
+
+  exports.createProxyHook = createProxyHook;
+  exports["default"] = proxy;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
 
 }));

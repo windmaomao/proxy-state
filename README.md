@@ -1,6 +1,6 @@
 # Proxy States
 
-_Proxy States_ creates an object to hold states and actions. 
+_Proxy States_ creates an object to hold states and actions. An action can manipulate the states internally. When a state gets changed, it can notify us with an event. 
 
 ## Install
 
@@ -19,23 +19,46 @@ const p = proxy({
   count: 1
 })
 
-p.count 	// 1
+p.count 	  // count: 1
 ```
 
-Now to increment the variable, we can define an action under the same object:
+Now to increment the variable, you can do that directly:
+
+```jsx
+p.count++   // count: 2
+```
+
+Or you can define an action under:
 
 ```javascript
 const p = proxy({
   count: 1,
-  inc: (s, payload) => {
-    s.count += payload
+  inc: (state, payload) => {
+    state.count += payload
   }
 })  
 
-p.inc(9)   // 10
+p.inc(9)    // count: 10
 ```
 
-Notice the `inc` action is a function that takes an input argument, which can be used to read out the `s.count` as well as setting it to a new value.
+Notice the `inc` action is defined with a function that takes the current `state` as an input argument. 
+
+To listen to a property change, we can use a event listener:
+
+```jsx
+const p = proxy({
+  count: 1
+})
+
+p.on('count', (v, prev) => {
+  // v: 2  prev: 1
+  console.log(v)
+})
+
+p.count++
+```
+
+The preceding `on` function listens to any change happened to the `count` state. The callback gives you the current value it changes to and the previous value it changes from.
 
 ## Options
 
@@ -78,7 +101,7 @@ p.inc()   // 2
 p.inc()   // 2
 ```
 
-Basically the `canSet` callback is used to accept change requests. For example, if you don't want to commit changes from the same state value, you can compare the new and old state value:
+Basically the `canSet` callback is used to determine whether a state change request should be accepted. For example, if you don't want to commit changes from the same state value, you can compare the new and old state value and skip if they are same:
 
 ```jsx
   canSet: (obj, prop, value) => obj[prop] !=== value
@@ -86,7 +109,7 @@ Basically the `canSet` callback is used to accept change requests. For example, 
 
 ### beforeSet
 
-The  `afterSet` callback is only invoked for the committed changes. In order to monitor all change request, we can use the `beforeSet` callback:
+The  `afterSet` callback is only invoked for the accepted changes. In order to monitor all changes including the skipped ones, we can use the `beforeSet` callback:
 
 ```jsx
 const p = proxy({
@@ -102,22 +125,6 @@ p.inc()
 ```
 
 Use the `beforeSet` callback can capture all change request regardless whether the change is accepted.
-
-### on change listening
-
-To listen to a property change, we can use a event listener `on`:
-
-```jsx
-const p = proxy({
-  count: 1,
-})
-
-p.on('count', (v) => {
-  ...
-})
-
-p.count++
-```
 
 ## React
 
@@ -149,7 +156,7 @@ function App() {
 
 ## Develop
 
-```
+```bash
   yarn install
   yarn test
 ```
